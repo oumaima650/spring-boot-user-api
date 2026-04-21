@@ -9,8 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import jakarta.persistence.Id;
-
 @Entity
 @Table(name = "users")
 @Getter
@@ -25,7 +23,7 @@ public class User {
 
     @Column(nullable = false)
     @NotBlank(message = "Le nom ne peut pas être vide")
-    @Size(min = 2, max = 50, message = "Le nom doit avoir entre 2 et 50 caractères")
+    @Size(min = 2, max = 50)
     private String name;
 
     @Column(nullable = false, unique = true)
@@ -39,6 +37,11 @@ public class User {
 
     @Column(nullable = false)
     @NotBlank(message = "Le mot de passe ne peut pas être vide")
-    @Size(min = 4, max = 10, message = "Le mot de passe doit avoir entre 2 et 10 caractères")
+    @Size(min = 4, max = 10)
     private String password;
+
+    // ✅ profile optionnel (nullable = true)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "profile_id", nullable = true)
+    private Profile profile;
 }

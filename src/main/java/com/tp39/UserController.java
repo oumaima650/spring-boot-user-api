@@ -1,12 +1,17 @@
-package com.tp39;
+package com.tp39;   // ← AJOUTER CETTE LIGNE EN PREMIER
 
+import com.tp39.User;
+import com.tp39.UserService;
+import com.tp39.userDTO;
 import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/users")
@@ -15,46 +20,42 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
+    private userDTO convertToDTO(User user) {
+        return modelMapper.map(user, userDTO.class);
+    }
+
     @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
+    public List<userDTO> getAllUsers() {
+        return userService.getAllUsers()
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable int id) {
-        return ResponseEntity.ok(userService.getUserById(id));
+    public ResponseEntity<userDTO> getUserById(@PathVariable int id) {
+        return ResponseEntity.ok(convertToDTO(userService.getUserById(id)));
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
+    public ResponseEntity<userDTO> createUser(@Valid @RequestBody User user) {
         User created = userService.createUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+        return ResponseEntity.status(HttpStatus.CREATED).body(convertToDTO(created));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable int id, @Valid @RequestBody User user) {
+    public ResponseEntity<userDTO> updateUser(@PathVariable int id,
+                                              @Valid @RequestBody User user) {
         User updated = userService.updateUser(id, user);
-        return ResponseEntity.ok(updated);
+        return ResponseEntity.ok(convertToDTO(updated));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable int id) {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/search/name")
-    public ResponseEntity<List<User>> findUsersByName(@RequestParam String name) {
-        return ResponseEntity.ok(userService.findUsersByName(name));
-    }
-
-    @GetMapping("/search/role")
-    public ResponseEntity<List<User>> findUsersByRole(@RequestParam String role) {
-        return ResponseEntity.ok(userService.findUsersByRole(role));
-    }
-
-    @GetMapping("/search/email")
-    public ResponseEntity<User> findUserByEmail(@RequestParam String email) {
-        return ResponseEntity.ok(userService.findUserByEmail(email));
     }
 }
