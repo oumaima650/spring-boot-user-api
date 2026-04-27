@@ -58,4 +58,10 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/with-profile")
+    public ResponseEntity<userDTO> createUserWithProfile(@RequestBody User user) {
+        User created = userService.createUserWithProfile(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(convertToDTO(created));
+    }
 }

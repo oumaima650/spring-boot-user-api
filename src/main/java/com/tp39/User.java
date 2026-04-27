@@ -40,8 +40,7 @@ public class User {
     @Size(min = 4, max = 10)
     private String password;
 
-    // ✅ profile optionnel (nullable = true)
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "profile_id", nullable = true)
+    @JoinColumn(name = "profile_id")
     private Profile profile;
 }

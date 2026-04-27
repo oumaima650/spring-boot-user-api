@@ -53,4 +53,11 @@ public class UserService {
         }
         return user;
     }
+
+    public User createUserWithProfile(User user) {
+        if (user.getProfile() != null) {
+            user.getProfile().setUser(user); // maintenir la relation bidirectionnelle
+        }
+        return userRepository.save(user);
+    }
 }

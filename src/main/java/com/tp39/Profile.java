@@ -1,9 +1,7 @@
 package com.tp39;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,4 +19,8 @@ public class Profile {
     private Integer id;
     private String address;
     private String phone;
+
+    @OneToOne(mappedBy = "profile")
+    @JsonIgnore
+    private User user;
 }

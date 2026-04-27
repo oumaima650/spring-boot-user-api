@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Configuration;
 public class userDTO {
     private String name;
     private String role;
+    private Profile profile;
 }
 
 
