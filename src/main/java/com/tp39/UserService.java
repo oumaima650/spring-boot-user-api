@@ -1,6 +1,8 @@
 package com.tp39;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -59,5 +61,9 @@ public class UserService {
             user.getProfile().setUser(user); // maintenir la relation bidirectionnelle
         }
         return userRepository.save(user);
+    }
+
+    public Page<User> getUsersWithPagination(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 }

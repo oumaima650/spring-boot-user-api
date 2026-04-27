@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import java.util.List;
 
 // UserDTO.java
 @Getter
@@ -17,6 +18,8 @@ public class userDTO {
     private String name;
     private String role;
     private Profile profile;
+    private DepartmentDTO department;
+    private List<RoleDTO> roles;
 }
 
 
